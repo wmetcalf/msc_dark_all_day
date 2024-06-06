@@ -1,9 +1,9 @@
 # msc_dark_all_day
 https://www.youtube.com/watch?v=ZLVwPZOW4iA
 ```
-python3 ./msc_dark_all_day.py --input='/home/coz/Downloads/Interview by Reuters(SeanKing).msc' --output=/tmp/dump9
-Commands, strings, images, files, json, all the MSC things have been saved to: /tmp/dump9
-coz@genesis:~/Downloads/msc_dark_all_day$ cat /tmp/dump8/msc_dark_all_day.json 
+python3 ./msc_dark_all_day.py --input='/home/coz/Downloads/Interview by Reuters(SeanKing).msc' --output=/tmp/dump8
+Commands, strings, images, files, json, all the MSC things have been saved to: /tmp/dump8
+ cat /tmp/dump8/msc_dark_all_day.json 
 {
     "commands": [
         {

@@ -1,0 +1,3 @@
+beautifulsoup4
+urlextract
+python-magic

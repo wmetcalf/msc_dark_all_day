@@ -45,19 +45,20 @@ def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
 
     string_table = {}
     urls = []
-    for string in soup.find_all("String"):
-        try:
-            string_id = string.get("ID")
-            string_value = string.text
-            string_table[string_id] = string_value
-            if string_value:
-                try:
-                    found_urls = extractor.find_urls(string_value)
-                    urls.extend(found_urls)
-                except Exception as e:
-                    print(f"Error Extracting URLs: {e}")
-        except Exception as e:
-            print(f"Error Extracting Strings: {e}")
+    for st in soup.find_all("StringTable"):
+        for string in st.find_all("String", {"ID": True}):
+            try:
+                string_id = string.get("ID")
+                string_value = string.text
+                string_table[string_id] = string_value
+                if string_value:
+                    try:
+                        found_urls = extractor.find_urls(string_value)
+                        urls.extend(found_urls)
+                    except Exception as e:
+                        print(f"Error Extracting URLs: {e}")
+            except Exception as e:
+                print(f"Error Extracting Strings: {e}")
 
     binary_storage = []
     for binary in soup.find_all("Binary"):

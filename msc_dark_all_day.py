@@ -11,9 +11,8 @@ from urlextract import URLExtract
 from PIL import Image
 
 
-def validate_msc_file(content):
-    soup = BeautifulSoup(content, "xml")
-    return bool(soup.find("MMC_ConsoleFile"))
+class InvalidMSCFile(Exception):
+    pass
 
 
 def calc_hashes(file_path):
@@ -38,6 +37,9 @@ def calc_image_hashes(file_path):
 
 def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
     soup = BeautifulSoup(content, "xml")
+    if not bool(soup.find("MMC_ConsoleFile")):
+        raise InvalidMSCFile
+
     extractor = URLExtract()
     mime = magic.Magic(mime=True)
 
@@ -226,14 +228,14 @@ def main(input_file, output_dir):
     with open(input_file, "r", encoding="utf-8") as file:
         content = file.read()
 
-    if validate_msc_file(content):
+    try:
         commands, string_table, urls, other_binaries, visual_icons = extract_and_resolve_commandline_tasks_with_images(content, output_dir)
         json_file_path = os.path.join(output_dir, "msc_dark_all_day.json")
         data = {"commands": commands, "strings": string_table, "urls": urls, "other_binaries": other_binaries, "visual_icons": visual_icons}
         with open(json_file_path, "w", encoding="utf-8") as json_file:
             json.dump(data, json_file, indent=4)
         print(f"Commands, strings, images, files, json, all the MSC things have been saved to: {output_dir}")
-    else:
+    except InvalidMSCFile:
         print("Give Me AN MSC File and Ill Darken Your Day!")
 
 

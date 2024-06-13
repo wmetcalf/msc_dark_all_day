@@ -6,14 +6,14 @@ import argparse
 import magic
 import imagehash
 import hashlib
+import struct
 from bs4 import BeautifulSoup
 from urlextract import URLExtract
 from PIL import Image
 
 
-def validate_msc_file(content):
-    soup = BeautifulSoup(content, "xml")
-    return bool(soup.find("MMC_ConsoleFile"))
+class InvalidMSCFile(Exception):
+    pass
 
 
 def calc_hashes(file_path):
@@ -28,6 +28,28 @@ def calc_hashes(file_path):
     return sha256.hexdigest(), sha1.hexdigest(), md5.hexdigest()
 
 
+def parse_imagelist_header(image_header):
+    data = struct.unpack_from("<2s6HL5H", image_header)
+    if data[0] != b"IL":
+        return {}
+
+    return {
+        "version": f"{data[1] >> 8}.{data[1] & 0xFF}",
+        "current_images": data[2],
+        "maximum_images": data[3],
+        # "grow_by_images": data[4],
+        "image_width": data[5],
+        "image_height": data[6],
+        "bg_color": f"0x{data[7]:04X}",
+        "flags": f"0x{data[8]:02X}",
+        # overlays index starts from one, not zero
+        "overlay_1": f"0x{data[9]:02X}",
+        "overlay_2": f"0x{data[10]:02X}",
+        "overlay_3": f"0x{data[11]:02X}",
+        "overlay_4": f"0x{data[12]:02X}",
+    }
+
+
 def calc_image_hashes(file_path):
     image = Image.open(file_path)
     phash = str(imagehash.phash(image))
@@ -38,24 +60,28 @@ def calc_image_hashes(file_path):
 
 def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
     soup = BeautifulSoup(content, "xml")
+    if not bool(soup.find("MMC_ConsoleFile")):
+        raise InvalidMSCFile
+
     extractor = URLExtract()
     mime = magic.Magic(mime=True)
 
     string_table = {}
     urls = []
-    for string in soup.find_all("String"):
-        try:
-            string_id = string.get("ID")
-            string_value = string.text
-            string_table[string_id] = string_value
-            if string_value:
-                try:
-                    found_urls = extractor.find_urls(string_value)
-                    urls.extend(found_urls)
-                except Exception as e:
-                    print(f"Error Extracting URLs: {e}")
-        except Exception as e:
-            print(f"Error Extracting Strings: {e}")
+    for st in soup.find_all("StringTable"):
+        for string in st.find_all("String", {"ID": True}):
+            try:
+                string_id = string.get("ID")
+                string_value = string.text
+                string_table[string_id] = string_value
+                if string_value:
+                    try:
+                        found_urls = extractor.find_urls(string_value)
+                        urls.extend(found_urls)
+                    except Exception as e:
+                        print(f"Error Extracting URLs: {e}")
+            except Exception as e:
+                print(f"Error Extracting Strings: {e}")
 
     binary_storage = []
     for binary in soup.find_all("Binary"):
@@ -87,16 +113,19 @@ def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
                         try:
                             image_ref_index = int(image.get("BinaryRefIndex"))
                             if image_ref_index < len(binary_storage):
-                                # wtf is this header
+                                image_header = binary_storage[image_ref_index][:28]
                                 image_data = binary_storage[image_ref_index][28:]
                                 image_filename = os.path.join(output_dir, f"image_{image_ref_index}")
-                                mime_type = mime.from_buffer(image_data)
-                                phash = None
-                                dhash = None
-                                ahash = None
                                 with open(image_filename, "wb") as image_file:
                                     image_file.write(image_data)
+                                try:
+                                    il_header = parse_imagelist_header(image_header)
+                                except Exception as e:
+                                    il_header = {}
+                                    print(f"Error Parsing ImageList Header: {e}")
                                 sha256, sha1, md5 = calc_hashes(image_filename)
+                                phash, dhash, ahash = (None, None, None)
+                                mime_type = mime.from_buffer(image_data)
                                 if mime_type.startswith("image"):
                                     try:
                                         phash, dhash, ahash = calc_image_hashes(image_filename)
@@ -106,6 +135,7 @@ def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
                                     {
                                         "image_ref_id": image_ref_index,
                                         "image_filename": image_filename,
+                                        "imagelist_header": il_header,
                                         "sha256": sha256,
                                         "sha1": sha1,
                                         "md5": md5,
@@ -141,16 +171,19 @@ def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
                 image_ref_index = int(image.get("BinaryRefIndex"))
                 if image_ref_index < len(binary_storage) and image_ref_index not in used_binaries:
                     if image_ref_index < len(binary_storage):
-                        # wtf is this header
+                        image_header = binary_storage[image_ref_index][:28]
                         image_data = binary_storage[image_ref_index][28:]
                         image_filename = os.path.join(output_dir, f"image_{image_ref_index}")
                         with open(image_filename, "wb") as image_file:
                             image_file.write(image_data)
-                        mime_type = mime.from_buffer(image_data)
-                        phash = None
-                        dhash = None
-                        ahash = None
+                        try:
+                            il_header = parse_imagelist_header(image_header)
+                        except Exception as e:
+                            il_header = {}
+                            print(f"Error Parsing ImageList Header: {e}")
                         sha256, sha1, md5 = calc_hashes(image_filename)
+                        phash, dhash, ahash = (None, None, None)
+                        mime_type = mime.from_buffer(image_data)
                         if mime_type.startswith("image"):
                             try:
                                 phash, dhash, ahash = calc_image_hashes(image_filename)
@@ -160,6 +193,7 @@ def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
                             {
                                 "image_ref_id": image_ref_index,
                                 "image_filename": image_filename,
+                                "imagelist_header": il_header,
                                 "sha256": sha256,
                                 "sha1": sha1,
                                 "md5": md5,
@@ -226,14 +260,14 @@ def main(input_file, output_dir):
     with open(input_file, "r", encoding="utf-8") as file:
         content = file.read()
 
-    if validate_msc_file(content):
+    try:
         commands, string_table, urls, other_binaries, visual_icons = extract_and_resolve_commandline_tasks_with_images(content, output_dir)
         json_file_path = os.path.join(output_dir, "msc_dark_all_day.json")
         data = {"commands": commands, "strings": string_table, "urls": urls, "other_binaries": other_binaries, "visual_icons": visual_icons}
         with open(json_file_path, "w", encoding="utf-8") as json_file:
             json.dump(data, json_file, indent=4)
         print(f"Commands, strings, images, files, json, all the MSC things have been saved to: {output_dir}")
-    else:
+    except InvalidMSCFile:
         print("Give Me AN MSC File and Ill Darken Your Day!")
 
 

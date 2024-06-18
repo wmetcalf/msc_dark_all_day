@@ -58,7 +58,7 @@ def calc_image_hashes(file_path):
     return phash, dhash, ahash
 
 
-def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
+def extract_and_resolve_commandline_tasks_with_images(content, output_dir, skip_image_hashes=False):
     soup = BeautifulSoup(content, "xml")
     if not bool(soup.find("MMC_ConsoleFile")):
         raise InvalidMSCFile
@@ -124,27 +124,22 @@ def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
                                     il_header = {}
                                     print(f"Error Parsing ImageList Header: {e}")
                                 sha256, sha1, md5 = calc_hashes(image_filename)
-                                phash, dhash, ahash = (None, None, None)
                                 mime_type = mime.from_buffer(image_data)
-                                if mime_type.startswith("image"):
+                                image = {
+                                    "image_ref_id": image_ref_index,
+                                    "image_filename": image_filename,
+                                    "imagelist_header": il_header,
+                                    "sha256": sha256,
+                                    "sha1": sha1,
+                                    "md5": md5,
+                                    "mime_type": mime_type,
+                                }
+                                if not skip_image_hashes and mime_type.startswith("image"):
                                     try:
-                                        phash, dhash, ahash = calc_image_hashes(image_filename)
+                                        image["phash"], image["dhash"], image["ahash"] = calc_image_hashes(image_filename)
                                     except Exception as e:
                                         print(f"Error Calculating Image Hashes: {e}")
-                                images.append(
-                                    {
-                                        "image_ref_id": image_ref_index,
-                                        "image_filename": image_filename,
-                                        "imagelist_header": il_header,
-                                        "sha256": sha256,
-                                        "sha1": sha1,
-                                        "md5": md5,
-                                        "phash": phash,
-                                        "dhash": dhash,
-                                        "ahash": ahash,
-                                        "mime_type": mime_type,
-                                    }
-                                )
+                                images.append(image)
                                 used_binaries.add(image_ref_index)
                         except Exception as e:
                             print(f"Error Extracting Console Task Images: {e}")
@@ -182,27 +177,22 @@ def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
                             il_header = {}
                             print(f"Error Parsing ImageList Header: {e}")
                         sha256, sha1, md5 = calc_hashes(image_filename)
-                        phash, dhash, ahash = (None, None, None)
                         mime_type = mime.from_buffer(image_data)
-                        if mime_type.startswith("image"):
+                        icon_image = {
+                            "image_ref_id": image_ref_index,
+                            "image_filename": image_filename,
+                            "imagelist_header": il_header,
+                            "sha256": sha256,
+                            "sha1": sha1,
+                            "md5": md5,
+                            "mime_type": mime_type,
+                        }
+                        if not skip_image_hashes and mime_type.startswith("image"):
                             try:
-                                phash, dhash, ahash = calc_image_hashes(image_filename)
+                                icon_image["phash"], icon_image["dhash"], icon_image["ahash"] = calc_image_hashes(image_filename)
                             except Exception as e:
                                 print(f"Error Calculating Image Hashes: {e}")
-                        icon_images.append(
-                            {
-                                "image_ref_id": image_ref_index,
-                                "image_filename": image_filename,
-                                "imagelist_header": il_header,
-                                "sha256": sha256,
-                                "sha1": sha1,
-                                "md5": md5,
-                                "phash": phash,
-                                "dhash": dhash,
-                                "ahash": ahash,
-                                "mime_type": mime_type,
-                            }
-                        )
+                        icon_images.append(icon_image)
                         used_binaries.add(image_ref_index)
                 elif image_ref_index in used_binaries:
                     for entry in images:
@@ -219,9 +209,6 @@ def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
                 mime_type = mime.from_buffer(data)
                 if mime_type.startswith("image"):
                     writeme = data
-            phash = None
-            dhash = None
-            ahash = None
             if mime_type == "application/x-empty" or len(writeme) == 0:
                 print(f"Skipping empty binary data at index {index}")
                 continue
@@ -232,38 +219,38 @@ def extract_and_resolve_commandline_tasks_with_images(content, output_dir):
             with open(file_path, "wb") as file:
                 file.write(writeme)
             sha256, sha1, md5 = calc_hashes(image_filename)
-
-            if mime_type.startswith("image"):
+            other_binary = {
+                "filename": file_path,
+                "sha256": sha256,
+                "sha1": sha1,
+                "md5": md5,
+                "mime_type": mime_type,
+            }
+            if not skip_image_hashes and mime_type.startswith("image"):
                 try:
-                    phash, dhash, ahash = calc_image_hashes(image_filename)
+                    other_binary["phash"], other_binary["dhash"], other_binary["ahash"] = calc_image_hashes(image_filename)
                 except Exception as e:
                     print(f"Error Calculating Image Hashes: {e}")
-            other_binaries.append(
-                {
-                    "filename": file_path,
-                    "sha256": sha256,
-                    "sha1": sha1,
-                    "md5": md5,
-                    "phash": phash,
-                    "dhash": dhash,
-                    "ahash": ahash,
-                    "mime_type": mime_type,
-                }
-            )
+            other_binaries.append(other_binary)
 
-    return commands, string_table, urls, other_binaries, visual_icons
+    return {
+        "commands": commands,
+        "strings": string_table,
+        "urls": urls,
+        "other_binaries": other_binaries,
+        "visual_icons": visual_icons,
+    }
 
 
-def main(input_file, output_dir):
+def main(input_file, output_dir, skip_image_hashes=False):
     os.makedirs(output_dir, exist_ok=True)
     print("https://www.youtube.com/watch?v=ZLVwPZOW4iA")
     with open(input_file, "r", encoding="utf-8") as file:
         content = file.read()
 
     try:
-        commands, string_table, urls, other_binaries, visual_icons = extract_and_resolve_commandline_tasks_with_images(content, output_dir)
+        data = extract_and_resolve_commandline_tasks_with_images(content, output_dir, skip_image_hashes)
         json_file_path = os.path.join(output_dir, "msc_dark_all_day.json")
-        data = {"commands": commands, "strings": string_table, "urls": urls, "other_binaries": other_binaries, "visual_icons": visual_icons}
         with open(json_file_path, "w", encoding="utf-8") as json_file:
             json.dump(data, json_file, indent=4)
         print(f"Commands, strings, images, files, json, all the MSC things have been saved to: {output_dir}")
@@ -273,8 +260,9 @@ def main(input_file, output_dir):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Extract CommandLine tasks and images from MSC file")
+    parser.add_argument("--no-image-hashes", action="store_true", default=False, help="Do not include image hashes in the output")
     parser.add_argument("--input", required=True, help="Path to the input MSC file")
     parser.add_argument("--output", required=True, help="Path to the output directory")
 
     args = parser.parse_args()
-    main(args.input, args.output)
+    main(args.input, args.output, args.no_image_hashes)

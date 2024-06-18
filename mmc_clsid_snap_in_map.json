@@ -1,0 +1,267 @@
+{
+    "011BE22D-E453-11D1-945A-00C04FB984F9": {
+        "NameStringIndirect": "@%systemroot%\\system32\\wsecedit.dll,-372"
+    },
+    "06993B16-A5C7-47EB-B61C-B1CB7EE600AC": {
+        "NameString": "Wired Network Policy Management",
+        "NameStringIndirect": "@C:\\Windows\\System32\\dot3gpui.dll,-3008"
+    },
+    "0E752416-F29E-4195-A9DD-7F0D4D5A9D71": {
+        "NameString": "Windows Defender Firewall with Advanced Security",
+        "NameStringIndirect": "@C:\\Windows\\System32\\AuthFWGP.dll,-20"
+    },
+    "1BC972D6-555C-4FF7-BE2C-C584021A0A6A": {
+        "NameString": "Software Installation (Users)",
+        "NameStringIndirect": "@appmgr.dll,-50"
+    },
+    "1F09B058-F3FD-4A9D-A8BA-A8A05F8FE283": {
+        "NameString": "DTC MMC Property-sheet extension",
+        "NameStringIndirect": "@%SystemRoot%\\system32\\comres.dll,-2951"
+    },
+    "1F5EEC01-1214-4D94-80C5-4BDCD2014DDD": {
+        "NameString": "Authorization Manager",
+        "NameStringIndirect": "@%systemroot%\\system32\\azroleui.dll,-1"
+    },
+    "2D4156A2-897A-11DB-BA21-001185AD2B89": {
+        "NameString": "Network List Manager Policies",
+        "NameStringIndirect": "@%SystemRoot%\\System32\\nlmgp.dll,-200"
+    },
+    "2DA6AA7F-8C88-4194-A558-0D36E7FD3E64": {
+        "NameString": "Wireless Network Policy Management",
+        "NameStringIndirect": "@C:\\Windows\\System32\\wlangpui.dll,-2"
+    },
+    "2F893820-7089-46CC-A6E8-C4AAE45F151B": {
+        "NameString": "DTC MMC Snap-in",
+        "NameStringIndirect": "@%SystemRoot%\\system32\\comres.dll,-2950"
+    },
+    "34AB8E82-C27E-11D1-A6C0-00C04FB94F17": {
+        "NameString": "Public Key Policies",
+        "NameStringIndirect": "@%systemroot%\\system32\\certmgr.dll,-386"
+    },
+    "394C052E-B830-11D0-9A86-00C04FD8DBF7": {
+        "NameString": "Classic Event Viewer Extension",
+        "NameStringIndirect": "@%SystemRoot%\\System32\\els.dll,-111"
+    },
+    "40B6664F-4972-11D1-A7CA-0000F87571E3": {
+        "NameString": "Scripts (Startup/Shutdown)",
+        "NameStringIndirect": "@scrptadm.dll,-2"
+    },
+    "40B66650-4972-11D1-A7CA-0000F87571E3": {
+        "NameString": "Scripts (Logon/Logoff)",
+        "NameStringIndirect": "@scrptadm.dll,-3"
+    },
+    "40B66660-4972-11D1-A7CA-0000F87571E3": {
+        "NameString": "Scripts (Startup/Shutdown)",
+        "NameStringIndirect": "@scrptadm.dll,-2"
+    },
+    "40B66661-4972-11D1-A7CA-0000F87571E3": {
+        "NameString": "Scripts (Logon/Logoff)",
+        "NameStringIndirect": "@scrptadm.dll,-3"
+    },
+    "4FE8C25F-C8E9-4322-98EE-A11E117CF049": {
+        "NameString": "Pushed Printer Connection Extension (Computers)",
+        "NameStringIndirect": "@ppcsnap.dll,-200"
+    },
+    "53D6AB1D-2488-11D1-A28C-00C04FB94F17": {
+        "NameString": "Certificates",
+        "NameStringIndirect": "@certmgr.dll,-288"
+    },
+    "57C596D0-9370-40C0-BA0D-AB491B63255D": {
+        "NameString": "",
+        "NameStringIndirect": "@C:\\Windows\\System32\\ipsmsnap.dll,-1"
+    },
+    "58221C65-EA27-11CF-ADCF-00AA00A80033": {
+        "NameString": "Shared Folders",
+        "NameStringIndirect": "@filemgmt.dll,-3500"
+    },
+    "58221C66-EA27-11CF-ADCF-00AA00A80033": {
+        "NameString": "Services",
+        "NameStringIndirect": "@filemgmt.dll,-3502"
+    },
+    "58221C67-EA27-11CF-ADCF-00AA00A80033": {
+        "NameString": "Computer Management",
+        "NameStringIndirect": "@%systemroot%\\system32\\mycomput.dll,-300"
+    },
+    "58221C69-EA27-11CF-ADCF-00AA00A80033": {
+        "NameString": "Shared Folders Extension",
+        "NameStringIndirect": "@filemgmt.dll,-3501"
+    },
+    "58221C6A-EA27-11CF-ADCF-00AA00A80033": {
+        "NameString": "Services Extension",
+        "NameStringIndirect": "@filemgmt.dll,-3503"
+    },
+    "5ADF5BF6-E452-11D1-945A-00C04FB984F9": {
+        "NameStringIndirect": "@%systemroot%\\system32\\wsecedit.dll,-24"
+    },
+    "5C659257-E236-11D2-8899-00104B2AFB46": {
+        "NameString": "WMI Control",
+        "NameStringIndirect": "@%SystemRoot%\\system32\\wbem\\wbemcntl.dll,-143"
+    },
+    "5D6179C8-17EC-11D1-9AA9-00C04FD8FE93": {
+        "NameString": "Local Users and Groups",
+        "NameStringIndirect": "@%systemroot%\\system32\\localsec.dll,-5026"
+    },
+    "63E23168-BFF7-4E87-A246-EF024425E4EC": {
+        "NameString": "RSOP Context Menu",
+        "NameStringIndirect": "@gpedit.dll,-1"
+    },
+    "6DC3804B-7212-458D-ADB0-9A07E2AE1FA2": {
+        "NameString": "Resultant Set of Policy",
+        "NameStringIndirect": "@gpedit.dll,-4"
+    },
+    "74246BFC-4C96-11D0-ABEF-0020AF6B0B7A": {
+        "NameString": "Device Manager",
+        "NameStringIndirect": "@%systemroot%\\system32\\devmgr.dll,-4"
+    },
+    "7478EF61-8C46-11D1-8D99-00A0C913CAD4": {
+        "NameString": "Performance Monitor",
+        "NameStringIndirect": "@%systemroot%\\system32\\wdc.dll,-10021"
+    },
+    "7478EF65-8C46-11D1-8D99-00A0C913CAD4": {
+        "NameString": "Performance Monitor Extension",
+        "NameStringIndirect": "@%systemroot%\\system32\\wdc.dll,-10022"
+    },
+    "7C606A3F-8AA8-4E36-92D6-2B6AFEC0B732": {
+        "NameString": "Print Queue View Extension",
+        "NameStringIndirect": "@pmcsnap.dll,-7210"
+    },
+    "7E45546F-6D52-4D10-B702-9C2E67232E62": {
+        "NameString": "Software Installation (Computers)",
+        "NameStringIndirect": "@appmgr.dll,-51"
+    },
+    "803E14A0-B4FB-11D0-A0D0-00A0C90F574B": {
+        "NameStringIndirect": "@%systemroot%\\system32\\wsecedit.dll,-26"
+    },
+    "84DE202D-5D95-4764-9014-A46F994CE856": {
+        "NameString": "Administrative Templates - Starter GPO (Computer)",
+        "NameStringIndirect": "@AdmTmpl.dll,-20"
+    },
+    "84DE202E-5D95-4764-9014-A46F994CE856": {
+        "NameString": "Administrative Templates - Starter GPO (User)",
+        "NameStringIndirect": "@AdmTmpl.dll,-21"
+    },
+    "88E729D6-BDC1-11D1-BD2A-00C04FB9603F": {
+        "NameString": "Folder Redirection Editor (Users)",
+        "NameStringIndirect": "@C:\\Windows\\System32\\fde.dll,-6"
+    },
+    "8EAD3A12-B2C1-11D0-83AA-00A0C92C9D5D": {
+        "NameString": "Disk Management Extension",
+        "NameStringIndirect": "@dmdskres.dll,-65534"
+    },
+    "8FC0B734-A0E1-11D1-A7D3-0000F87571E3": {
+        "NameString": "Local Group Policy Editor",
+        "NameStringIndirect": "@gpedit.dll,-2"
+    },
+    "90087284-D6D6-11D0-8353-00A0C90640BF": {
+        "NameString": "Device Manager extension",
+        "NameStringIndirect": "@%systemroot%\\System32\\devmgr.dll,-981"
+    },
+    "93F7AA8E-CF82-4CB7-9251-48BC637A43B8": {
+        "NameString": "Software Restriction Policies",
+        "NameStringIndirect": "@%systemroot%\\system32\\certmgr.dll,-14"
+    },
+    "942A8E4F-A261-11D1-A760-00C04FB9603F": {
+        "NameString": "Software Installation (Computers)",
+        "NameStringIndirect": "@appmgr.dll,-51"
+    },
+    "975797FC-4E2A-11D0-B702-00C04FD8DBF7": {
+        "NameString": "Classic Event Viewer",
+        "NameStringIndirect": "@%SystemRoot%\\System32\\els.dll,-110"
+    },
+    "A17DA8D0-F67D-47A0-9EC4-19C486383206": {
+        "NameString": "",
+        "NameStringIndirect": "@C:\\Windows\\System32\\ipsmsnap.dll,-31"
+    },
+    "B3408A2F-8DDA-1197-FBD5-2CE69A2DEFC0": {
+        "NameString": "Policy-based QoS (Computers)",
+        "NameStringIndirect": "@%systemroot%\\system32\\eqossnap.dll,-31000"
+    },
+    "B3408A2F-8DDA-1197-FBD5-2CE69A2DEFC1": {
+        "NameString": "Policy-based QoS (Users)",
+        "NameStringIndirect": "@%systemroot%\\system32\\eqossnap.dll,-31001"
+    },
+    "B6F9C8AE-EF3A-41C8-A911-37370C331DD4": {
+        "NameString": "Administrative Templates (Computers)",
+        "NameStringIndirect": "@scrptadm.dll,-20"
+    },
+    "B6F9C8AF-EF3A-41C8-A911-37370C331DD4": {
+        "NameString": "Administrative Templates (Users)",
+        "NameStringIndirect": "@scrptadm.dll,-21"
+    },
+    "B708457E-DB61-4C55-A92F-0D4B5E9B1224": {
+        "NameString": "Extended View",
+        "NameStringIndirect": "@mmcbase.dll,-14177"
+    },
+    "BACF5C8A-A3C7-11D1-A760-00C04FB9603F": {
+        "NameString": "Software Installation (Users)",
+        "NameStringIndirect": "@appmgr.dll,-50"
+    },
+    "BD95BA60-2E26-AAD1-AD99-00AA00B8E05A": {
+        "NameString": "Service Dependencies",
+        "NameStringIndirect": "@%systemroot%\\system32\\wbem\\servdeps.dll,-1"
+    },
+    "C40D66A0-E90C-46C6-AA3B-473E38C72BF2": {
+        "NameString": "Folder Redirection Editor (Users)",
+        "NameStringIndirect": "@C:\\Windows\\System32\\fde.dll,-6"
+    },
+    "C4457F51-993A-4B98-A19B-EC2B4F0DA087": {
+        "NameStringIndirect": "@%WINDIR%\\system32\\SrpUxNativeSnapIn.dll,-20"
+    },
+    "C96401CC-0E17-11D3-885B-00C04F72C717": {
+        "NameString": "Folder",
+        "NameStringIndirect": "@mmcbase.dll,-14008"
+    },
+    "C96401CF-0E17-11D3-885B-00C04F72C717": {
+        "NameString": "ActiveX Control",
+        "NameStringIndirect": "@mmcbase.dll,-214"
+    },
+    "C96401D1-0E17-11D3-885B-00C04F72C717": {
+        "NameString": "Link to Web Address",
+        "NameStringIndirect": "@mmcbase.dll,-14010"
+    },
+    "C9BC92DF-5B9A-11D1-8F00-00C04FC2C17B": {
+        "NameString": "Component Services",
+        "NameStringIndirect": "@comres.dll,-659"
+    },
+    "CB35832D-0C2C-41A9-84E1-A7CD1E0C6254": {
+        "NameString": "Pushed Printer Connection Extension (Users)",
+        "NameStringIndirect": "@ppcsnap.dll,-203"
+    },
+    "D02B1F72-3407-48AE-BA88-E8213C6761F1": {
+        "NameString": "Administrative Templates (Computers)",
+        "NameStringIndirect": "@AdmTmpl.dll,-20"
+    },
+    "D02B1F73-3407-48AE-BA88-E8213C6761F1": {
+        "NameString": "Administrative Templates (Users)",
+        "NameStringIndirect": "@AdmTmpl.dll,-21"
+    },
+    "D06342BD-9057-4673-B43A-0E9BBBE99F11": {
+        "NameString": "Print Management",
+        "NameStringIndirect": "@pmcsnap.dll,-700"
+    },
+    "DBFCA500-8C31-11D0-AA2C-00A0C92749A3": {
+        "NameString": "Disk Management",
+        "NameStringIndirect": "@dmdskres.dll,-65535"
+    },
+    "DEA8AFA0-CC85-11D0-9CE2-0080C7221EBD": {
+        "NameString": "IP Security Policy Management",
+        "NameStringIndirect": "@C:\\Windows\\System32\\ipsecsnp.dll,-2"
+    },
+    "DFFFAE4D-F0CF-46CD-9586-FE891237AB8A": {
+        "NameString": "Component Services",
+        "NameStringIndirect": "@comres.dll,-659"
+    },
+    "E25E57E9-DA9C-4A35-A0D8-CFB5EA6AF7E6": {
+        "NameStringIndirect": "@%WINDIR%\\system32\\auditpolmsg.dll,-400"
+    },
+    "F4D8C39A-F43D-42B4-9BDF-4E48D3044BA0": {
+        "NameString": "Name Resolution Policy",
+        "NameStringIndirect": "@C:\\Windows\\System32\\dnscmmc.dll,-1000"
+    },
+    "FE883157-CEBD-4570-B7A2-E4FE06ABE626": {
+        "NameStringIndirect": "@%systemroot%\\system32\\wsecedit.dll,-26"
+    },
+    "FEDB2179-2335-48F1-AA28-5CDA35A2B36D": {
+        "NameString": "ASP.NET Management Extension"
+    }
+}

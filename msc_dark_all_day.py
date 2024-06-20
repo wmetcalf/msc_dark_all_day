@@ -218,7 +218,7 @@ def extract_and_resolve_commandline_tasks_with_images(content, output_dir, skip_
                 file_path = os.path.join(output_dir, f"other_binary_{index}.bin")
             with open(file_path, "wb") as file:
                 file.write(writeme)
-            sha256, sha1, md5 = calc_hashes(image_filename)
+            sha256, sha1, md5 = calc_hashes(file_path)
             other_binary = {
                 "filename": file_path,
                 "sha256": sha256,

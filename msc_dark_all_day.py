@@ -264,13 +264,11 @@ class MSCParser:
                     for ncd in node_component_datas.find_all("ComponentData"):
                         try:
                             ncd_guid = ncd.find("GUID", string=True).string
-                            out_node["component_data"].append(
-                                {
-                                    "guid": ncd_guid,
-                                    "guid_info": self.get_clsid_info(ncd_guid),
-                                    "stream": self.get_binary(ncd.find("Stream")),
-                                }
-                            )
+                            out_ncd = {"guid": ncd_guid, "guid_info": self.get_clsid_info(ncd_guid)}
+                            ncd_stream = ncd.find("Stream")
+                            if ncd_stream:
+                                out_ncd["stream"] = self.get_binary(ncd_stream)
+                            out_node["component_data"].append(out_ncd)
                         except Exception as e:
                             print(f"Error Extracting Node Component Data: {e}")
 
@@ -280,13 +278,11 @@ class MSCParser:
                     for nc in node_components.find_all("Component"):
                         try:
                             nc_guid = nc.find("GUID", string=True).string
-                            out_node["components"].append(
-                                {
-                                    "guid": nc_guid,
-                                    "guid_info": self.get_clsid_info(nc_guid),
-                                    "storage": self.get_binary(nc.find("Storage")),
-                                }
-                            )
+                            out_nc = {"guid": nc_guid, "guid_info": self.get_clsid_info(nc_guid)}
+                            nc_storage = nc.find("Storage")
+                            if nc_storage:
+                                out_nc["storage"] = self.get_binary()
+                            out_node["components"].append(out_nc)
                         except Exception as e:
                             print(f"Error Extracting Node Component: {e}")
 

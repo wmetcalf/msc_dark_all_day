@@ -40,6 +40,8 @@ class MSCParser:
             with open(clsid_map_filename) as clsid_map_file:
                 self.clsid_map = json.load(clsid_map_file)
 
+        self.pem_wrapper_re = re.compile(r"^\s*-----BEGIN\s[^-]{0,256}-----(?P<binary>[A-Za-z0-9+/=\s]+)-----END\s[^-]{0,256}-----\s*$")
+
     def dump(self, output_dir, output_json, disable_image_hashes=False):
         os.makedirs(output_dir, exist_ok=True)
         self.dump_binaries(output_dir, disable_image_hashes)
@@ -74,7 +76,13 @@ class MSCParser:
 
         for i, binary in enumerate(binary_storage.find_all("Binary", string=True)):
             try:
-                binary_data = base64.b64decode(binary.string)
+                binary_string = binary.string
+                if all(x in binary_string for x in ["-----BEGIN ", "-----END "]):
+                    match = self.pem_wrapper_re.match(binary_string)
+                    if match:  # remove PEM wrapper
+                        binary_string = match.group("binary")
+
+                binary_data = base64.b64decode(binary_string)
                 self.binaries[i] = {"filename": os.path.join(output_dir, f"binary_{i}")}
 
                 # special handling for ImageList

@@ -46,13 +46,16 @@ class MSCParser:
         os.makedirs(output_dir, exist_ok=True)
         self.dump_binaries(output_dir, disable_image_hashes)
         self.load_strings()
+        self.parse_tasks()
+        self.parse_nodes()
+        self.parse_icons()
 
         data = {
             "urls": list(self.urls),
             "strings": list(self.strings.values()),
-            "tasks": self.parse_tasks(),
-            "nodes": self.parse_nodes(),
-            "icons": self.parse_icons(),
+            "tasks": self.tasks,
+            "nodes": self.nodes,
+            "icons": self.icons,
             "binaries": list(b for i, b in self.binaries.items() if i not in self.used_binaries),
         }
 
@@ -207,14 +210,14 @@ class MSCParser:
         return info
 
     def parse_tasks(self):
-        out_tasks = []
+        self.tasks = []
         for console_taskpad in self.soup.find_all("ConsoleTaskpad"):
             for task in console_taskpad.find_all("Task", {"Type": "CommandLine"}):
                 try:
                     command = task.get("Command", "")
                     params = task.find("CommandLine").get("Params", "")
-                    self.extract_urls(params)
-                    full_command = f"{command} {params}"
+                    full_command = f"{command} {params}".strip()
+                    self.extract_urls(full_command)
                     task_name = self.get_string(task, "Name")
                     task_description = self.get_string(task, "Description")
 
@@ -226,7 +229,7 @@ class MSCParser:
                             except Exception as e:
                                 print(f"Error Extracting Console Task Images: {e}")
 
-                    out_tasks.append(
+                    self.tasks.append(
                         {
                             "name": task_name,
                             "description": task_description,
@@ -239,14 +242,13 @@ class MSCParser:
                 except Exception as e:
                     print(f"Error Extracting Console Task Commands: {e}")
 
-        return out_tasks
-
     def parse_nodes(self):
+        self.nodes = []
+
         scope_tree = self.soup.find("ScopeTree")
         if not scope_tree:
-            return []
+            return
 
-        out_nodes = []
         for node in scope_tree.find_all("Node"):
             try:
                 node_clsid = node.get("CLSID")
@@ -294,18 +296,17 @@ class MSCParser:
                         except Exception as e:
                             print(f"Error Extracting Node Component: {e}")
 
-                out_nodes.append(out_node)
+                self.nodes.append(out_node)
             except Exception as e:
                 print(f"Error Extracting Scope Tree Nodes: {e}")
 
-        return out_nodes
-
     def parse_icons(self):
+        self.icons = []
+
         visual_attributes = self.soup.find("VisualAttributes")
         if not visual_attributes:
-            return []
+            return
 
-        out_icons = []
         for icon in visual_attributes.find_all("Icon"):
             out_icon = {
                 "icon_index": icon.get("Index"),
@@ -317,10 +318,8 @@ class MSCParser:
                     out_icon["images"].append(self.get_binary(image))
                 except Exception as e:
                     print(f"Error Extracting Icon Image: {e}")
-            out_icons.append(out_icon)
+            self.icons.append(out_icon)
             self.extract_urls(out_icon["icon_file"])
-
-        return out_icons
 
 
 if __name__ == "__main__":

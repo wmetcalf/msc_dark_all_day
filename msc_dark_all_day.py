@@ -155,7 +155,7 @@ class MSCParser:
         # overlay_4 = header[12]
 
         il_image = Image.open(io.BytesIO(il_data))
-        if (image_width * maximum_images, image_height) != il_image.size:
+        if il_image.height < image_height or il_image.width < (image_width * current_images):
             raise ValueError("IL size not matching")
 
         return list(il_image.crop((image_width * i, 0, image_width * (i + 1), image_height)) for i in range(current_images))
